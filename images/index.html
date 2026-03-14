@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amr Osama — Automotive Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #ff2233;
+  --red-dim: rgba(255,34,51,0.15);
+  --red-glow: rgba(255,34,51,0.5);
+  --orange: #ff6600;
+  --bg: #060606;
+  --bg2: #0e0e0e;
+  --bg3: #141414;
+  --line: rgba(255,255,255,0.06);
+  --text: #e8e8e8;
+  --muted: #444;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--red);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,34,51,0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: left 0.12s ease, top 0.12s ease;
+}
+a:hover ~ .cursor, button:hover ~ .cursor { transform: translate(-50%,-50%) scale(2.5); }
+
+/* ── FLOATING CARS BACKGROUND ── */
+.cars-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.car-icon {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0.04;
+  animation: floatCar linear infinite;
+  filter: blur(0.5px);
+}
+@keyframes floatCar {
+  0%   { transform: translateX(-120px) translateY(0) rotate(0deg); opacity: 0; }
+  5%   { opacity: 0.05; }
+  95%  { opacity: 0.05; }
+  100% { transform: translateX(calc(100vw + 120px)) translateY(-60px) rotate(5deg); opacity: 0; }
+}
+
+/* ── SCANLINES ── */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.15) 2px,
+    rgba(0,0,0,0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── GRID LINES ── */
+.grid-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* ── CONTENT WRAPPER ── */
+.wrap { position: relative; z-index: 2; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--red), var(--orange), var(--red), transparent);
+  animation: barScan 3s linear infinite;
+}
+@keyframes barScan {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+.hero-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--red);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-label::before { content: '[ '; }
+.hero-label::after  { content: ' ]'; }
+
+.hero h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(36px, 8vw, 90px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -2px;
+  color: #fff;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero h1 .slash {
+  color: var(--red);
+  font-weight: 400;
+}
+
+.hero-sub {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(13px, 2vw, 17px);
+  color: #555;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-contacts {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2.5rem;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.contact-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 8px 16px;
+  border-radius: 2px;
+  font-size: 13px;
+  color: #777;
+  letter-spacing: 0.5px;
+  transition: border-color 0.2s, color 0.2s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.contact-chip:hover { border-color: var(--red); color: #fff; }
+.contact-chip .ic { color: var(--red); font-size: 14px; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: fadeUp 1s 0.6s both;
+}
+.scroll-arrow {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(var(--red), transparent);
+  animation: scrollPulse 1.5s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+/* ── SPEED LINES (hero decoration) ── */
+.speed-lines {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.speed-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  animation: speedLine linear infinite;
+  opacity: 0;
+}
+@keyframes speedLine {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+/* ── SECTIONS ── */
+.container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+
+section { padding: 6rem 0; }
+
+.sec-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.sec-num {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  color: var(--red);
+  letter-spacing: 2px;
+}
+.sec-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+}
+.sec-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,34,51,0.4), transparent);
+}
+
+/* ── PHOTO GRID ── */
+.photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  background: var(--red-dim);
+  border: 1px solid rgba(255,34,51,0.2);
+  padding: 3px;
+}
+.photo-card {
+  background: var(--bg2);
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+}
+.photo-card.featured {
+  grid-column: span 2;
+  aspect-ratio: 16/7;
+}
+.photo-card:hover { transform: scale(1.01); z-index: 2; }
+.photo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,34,51,0.05), transparent 50%);
+  pointer-events: none;
+}
+.photo-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--red), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.photo-card:hover::after { transform: scaleX(1); }
+
+.photo-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.photo-placeholder {
+  text-align: center;
+  color: #222;
+}
+.ph-car-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 0.15; } 50% { opacity: 0.35; } }
+.ph-text { font-size: 12px; color: #2a2a2a; letter-spacing: 2px; text-transform: uppercase; }
+
+.photo-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 10px 14px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+.photo-card:hover .photo-label { transform: translateY(0); }
+.photo-label .ptag {
+  font-size: 10px;
+  color: var(--red);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* ── CORNER DECORATIONS ── */
+.corner-dec {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-color: var(--red);
+  border-style: solid;
+  opacity: 0.7;
+}
+.corner-dec.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+.corner-dec.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+.corner-dec.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+.corner-dec.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+/* ── EXPERIENCE ── */
+.exp-list { display: flex; flex-direction: column; gap: 2px; }
+.exp-item {
+  display: grid;
+  grid-template-columns: 4px 1fr;
+  gap: 0;
+  background: var(--bg2);
+  border: 1px solid #1a1a1a;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.exp-item:hover { border-color: rgba(255,34,51,0.3); }
+.exp-bar {
+  background: #1a1a1a;
+  transition: background 0.2s;
+}
+.exp-item:hover .exp-bar { background: var(--red); }
+.exp-body { padding: 1.5rem; }
+.exp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 6px;
+}
+.exp-role {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.exp-period-badge {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: var(--red);
+  border: 1px solid rgba(255,34,51,0.3);
+  padding: 3px 10px;
+  letter-spacing: 1px;
+}
+.exp-company { font-size: 13px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+.exp-now {
+  display: inline-block;
+  background: rgba(255,34,51,0.1);
+  color: var(--red);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  margin-left: 10px;
+  border: 1px solid rgba(255,34,51,0.25);
+  vertical-align: middle;
+  animation: nowBlink 2s ease-in-out infinite;
+}
+@keyframes nowBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ── SKILLS ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 2px;
+}
+.skill-item {
+  background: var(--bg2);
+  border: 1px solid #1a1a1a;
+  padding: 1.2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  cursor: default;
+}
+.skill-item:hover { border-color: rgba(255,34,51,0.3); }
+.skill-item::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--red);
+  transition: width 0.4s ease;
+}
+.skill-item:hover::before { width: 100%; }
+.skill-cat {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  color: #333;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.skill-name { font-size: 15px; font-weight: 700; color: #ccc; letter-spacing: 0.5px; }
+
+/* ── LANGUAGE CARDS ── */
+.lang-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+.lang-card {
+  background: var(--bg2);
+  border: 1px solid #1a1a1a;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.lang-card:hover { border-color: rgba(255,34,51,0.3); }
+.lang-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--red), var(--orange));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.lang-card:hover::after { transform: scaleX(1); }
+.lang-flag { font-size: 30px; margin-bottom: 10px; display: block; }
+.lang-name { font-family: 'Orbitron', monospace; font-size: 12px; color: #fff; letter-spacing: 1px; margin-bottom: 6px; }
+.lang-lv {
+  font-size: 11px;
+  color: var(--red);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── EDUCATION ── */
+.edu-block {
+  background: var(--bg2);
+  border: 1px solid #1a1a1a;
+  border-left: 3px solid var(--red);
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  transition: border-color 0.2s;
+}
+.edu-block:hover { border-color: rgba(255,34,51,0.4); border-left-color: var(--red); }
+.edu-glyph {
+  font-family: 'Orbitron', monospace;
+  font-size: 40px;
+  color: rgba(255,34,51,0.2);
+  line-height: 1;
+}
+.edu-degree {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.edu-uni { font-size: 13px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.edu-honors {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,34,51,0.08);
+  border: 1px solid rgba(255,34,51,0.2);
+  padding: 5px 14px;
+  font-size: 11px;
+  color: var(--red);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.edu-honors::before { content: '★'; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid #111;
+  padding: 3rem 1rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 1px;
+  background: var(--red);
+  opacity: 0.4;
+}
+.footer-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  color: #333;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.footer-sub { font-size: 12px; color: #222; letter-spacing: 2px; }
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .photo-grid { grid-template-columns: 1fr; }
+  .photo-card.featured { grid-column: span 1; }
+  .lang-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-contacts { gap: 0.8rem; }
+  .edu-block { grid-template-columns: 1fr; }
+  .edu-glyph { display: none; }
+  section { padding: 4rem 0; }
+}
+
+/* ── RPM METER DECORATION ── */
+.rpm-deco {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  z-index: 10;
+  opacity: 0.3;
+  animation: rpmSpin 8s linear infinite;
+  pointer-events: none;
+}
+@keyframes rpmSpin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- FLOATING CARS BG -->
+<div class="cars-bg" id="carsBg"></div>
+
+<!-- GRID + SCANLINES -->
+<div class="grid-bg"></div>
+
+<!-- RPM DECO -->
+<svg class="rpm-deco" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="30" cy="30" r="28" stroke="#ff2233" stroke-width="0.5" stroke-dasharray="4 6"/>
+  <circle cx="30" cy="30" r="18" stroke="#ff2233" stroke-width="0.5" stroke-dasharray="2 4"/>
+  <line x1="30" y1="30" x2="30" y2="6" stroke="#ff2233" stroke-width="1.5"/>
+</svg>
+
+<div class="wrap">
+
+  <!-- ══════════ HERO ══════════ -->
+  <div class="hero">
+    <div class="hero-top-bar"></div>
+
+    <div class="speed-lines" id="speedLines"></div>
+
+    <div class="hero-label">Automotive Portfolio</div>
+
+    <h1>
+      AMR<br>
+      OSAMA
+    </h1>
+
+    <p class="hero-sub">Translator &nbsp;·&nbsp; Customer Service &nbsp;·&nbsp; Car Enthusiast</p>
+
+    <div class="hero-contacts">
+      <div class="contact-chip"><span class="ic">📍</span> Ismailia, Egypt</div>
+      <div class="contact-chip"><span class="ic">📞</span> +20 12 70802558</div>
+      <div class="contact-chip"><span class="ic">✉</span> amrosamhsdjji434@gmail.com</div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ══════════ PERSONAL PHOTO ══════════ -->
+    <section>
+      <div class="sec-header reveal">
+        <span class="sec-num">01</span>
+        <h2 class="sec-title">IDENTITY</h2>
+        <div class="sec-line"></div>
+      </div>
+
+      <div class="photo-grid reveal">
+        <div class="photo-card featured" style="aspect-ratio: 16/11;">
+          <div class="corner-dec tl"></div>
+          <div class="corner-dec tr"></div>
+          <div class="corner-dec bl"></div>
+          <div class="corner-dec br"></div>
+          <img src="1.0.jpeg" alt="Amr Osama">
+          <div class="photo-label">
+            <span class="ptag">Identity</span>
+            Amr Osama Rashed
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ PROJECTS ══════════ -->
+    <section>
+      <div class="sec-header reveal">
+        <span class="sec-num">02</span>
+        <h2 class="sec-title">GARAGE</h2>
+        <div class="sec-line"></div>
+      </div>
+
+      <div class="photo-grid reveal">
+
+        <div class="photo-card">
+          <div class="corner-dec tl"></div>
+          <div class="corner-dec br"></div>
+          <img src="2.jpeg" alt="Project 1">
+          <div class="photo-label">
+            <span class="ptag">Modification</span>
+            Car Build #1
+          </div>
+        </div>
+
+        <div class="photo-card">
+          <div class="corner-dec tl"></div>
+          <div class="corner-dec br"></div>
+          <img src="3.0.jpeg" alt="Project 2">
+          <div class="photo-label">
+            <span class="ptag">Custom Work</span>
+            Car Build #2
+          </div>
+        </div>
+
+        <div class="photo-card">
+          <div class="corner-dec tl"></div>
+          <div class="corner-dec br"></div>
+          <img src="3.1.jpeg" alt="Project 3">
+          <div class="photo-label">
+            <span class="ptag">Engine Work</span>
+            Car Build #3
+          </div>
+        </div>
+
+        <div class="photo-card">
+          <div class="corner-dec tl"></div>
+          <div class="corner-dec br"></div>
+          <img src="4.jpeg" alt="Project 4">
+          <div class="photo-label">
+            <span class="ptag">Detailing</span>
+            Car Build #4
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ EXPERIENCE ══════════ -->
+    <section>
+      <div class="sec-header reveal">
+        <span class="sec-num">03</span>
+        <h2 class="sec-title">EXPERIENCE</h2>
+        <div class="sec-line"></div>
+      </div>
+
+      <div class="exp-list">
+
+        <div class="exp-item reveal">
+          <div class="exp-bar"></div>
+          <div class="exp-body">
+            <div class="exp-row">
+              <div class="exp-role">Customer Service Representative <span class="exp-now">Live</span></div>
+              <div class="exp-period-badge">2026 – Present</div>
+            </div>
+            <div class="exp-company">Concentrix — International Call Center</div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-bar"></div>
+          <div class="exp-body">
+            <div class="exp-row">
+              <div class="exp-role">Receptionist & Amadeus GDS User</div>
+              <div class="exp-period-badge">2025 – 2026</div>
+            </div>
+            <div class="exp-company">Suez Canal Authority Olympic Gym (SCOV)</div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-bar"></div>
+          <div class="exp-body">
+            <div class="exp-row">
+              <div class="exp-role">Security Clearance & Translator</div>
+              <div class="exp-period-badge">2023 – 2025</div>
+            </div>
+            <div class="exp-company">Al-Rashad Contracting & Supplies</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ EDUCATION ══════════ -->
+    <section>
+      <div class="sec-header reveal">
+        <span class="sec-num">04</span>
+        <h2 class="sec-title">EDUCATION</h2>
+        <div class="sec-line"></div>
+      </div>
+
+      <div class="edu-block reveal">
+        <div class="edu-glyph">🎓</div>
+        <div>
+          <div class="edu-degree">English Simultaneous Translation</div>
+          <div class="edu-uni">Faculty of Arts — Suez Canal University</div>
+          <div class="edu-honors">Excellent with Honours · Ranked 1st Every Year</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SKILLS ══════════ -->
+    <section>
+      <div class="sec-header reveal">
+        <span class="sec-num">05</span>
+        <h2 class="sec-title">SKILLS</h2>
+        <div class="sec-line"></div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-item reveal"><div class="skill-cat">System</div><div class="skill-name">Amadeus GDS</div></div>
+        <div class="skill-item reveal"><div class="skill-cat">System</div><div class="skill-name">Expedia US</div></div>
+        <div class="skill-item reveal"><div class="skill-cat">Tools</div><div class="skill-name">MS Word & Excel</div></div>
+        <div class="skill-item reveal"><div class="skill-cat">Soft Skill</div><div class="skill-name">Negotiation</div></div>
+        <div class="skill-item reveal"><div class="skill-cat">Soft Skill</div><div class="skill-name">Customer Service</div></div>
+        <div class="skill-item reveal"><div class="skill-cat">Soft Skill</div><div class="skill-name">Under Pressure</div></div>
+        <div class="skill-item reveal"><div class="skill-cat">Specialty</div><div class="skill-name">Translation</div></div>
+        <div class="skill-item reveal"><div class="skill-cat">Soft Skill</div><div class="skill-name">Leadership</div></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LANGUAGES ══════════ -->
+    <section>
+      <div class="sec-header reveal">
+        <span class="sec-num">06</span>
+        <h2 class="sec-title">LANGUAGES</h2>
+        <div class="sec-line"></div>
+      </div>
+
+      <div class="lang-grid">
+        <div class="lang-card reveal">
+          <span class="lang-flag">🇪🇬</span>
+          <div class="lang-name">Arabic</div>
+          <div class="lang-lv">Native</div>
+        </div>
+        <div class="lang-card reveal">
+          <span class="lang-flag">🇬🇧</span>
+          <div class="lang-name">English</div>
+          <div class="lang-lv">Fluent</div>
+        </div>
+        <div class="lang-card reveal">
+          <span class="lang-flag">🇩🇪</span>
+          <div class="lang-name">German</div>
+          <div class="lang-lv">A2</div>
+        </div>
+        <div class="lang-card reveal">
+          <span class="lang-flag">🇫🇷</span>
+          <div class="lang-name">French</div>
+          <div class="lang-lv">A2</div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /container -->
+
+  <footer>
+    <div class="footer-name">Amr Osama Rashed</div>
+    <div class="footer-sub">Ismailia, Egypt &nbsp;·&nbsp; amrosamhsdjji434@gmail.com &nbsp;·&nbsp; +20 12 70802558</div>
+  </footer>
+
+</div><!-- /wrap -->
+
+<script>
+// ── CUSTOM CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+  ring.style.left   = mx + 'px';
+  ring.style.top    = my + 'px';
+});
+document.querySelectorAll('a, button, .photo-card, .exp-item, .skill-item, .lang-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; });
+});
+
+// ── FLOATING CARS ──
+const carEmojis = ['🚗','🚘','🚙','🏎️','🚕','🛻','🚐'];
+const bg = document.getElementById('carsBg');
+function spawnCar() {
+  const el = document.createElement('div');
+  el.className = 'car-icon';
+  el.textContent = carEmojis[Math.floor(Math.random() * carEmojis.length)];
+  el.style.top = Math.random() * 100 + 'vh';
+  el.style.left = '-80px';
+  const dur = 12 + Math.random() * 20;
+  el.style.animationDuration = dur + 's';
+  el.style.animationDelay = Math.random() * -dur + 's';
+  el.style.fontSize = (20 + Math.random() * 24) + 'px';
+  bg.appendChild(el);
+  setTimeout(() => el.remove(), (dur + 2) * 1000);
+}
+for (let i = 0; i < 18; i++) spawnCar();
+setInterval(spawnCar, 2500);
+
+// ── SPEED LINES ──
+const speedContainer = document.getElementById('speedLines');
+function spawnLine() {
+  const line = document.createElement('div');
+  line.className = 'speed-line';
+  const topPct = Math.random() * 100;
+  line.style.top = topPct + '%';
+  const w = 80 + Math.random() * 200;
+  line.style.width = w + 'px';
+  const dur = 0.4 + Math.random() * 0.8;
+  line.style.animationDuration = dur + 's';
+  line.style.animationDelay = Math.random() * 2 + 's';
+  speedContainer.appendChild(line);
+  setTimeout(() => line.remove(), (dur + 2) * 1000);
+}
+for (let i = 0; i < 12; i++) spawnLine();
+setInterval(spawnLine, 300);
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const delay = (i % 4) * 80;
+      setTimeout(() => entry.target.classList.add('visible'), delay);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
